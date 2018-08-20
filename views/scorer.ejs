@@ -1,0 +1,609 @@
+<html>
+
+<head>
+        <% include partials/head.ejs %>
+</head>
+
+<body>
+
+
+
+        <script>
+                /* Set the width of the side navigation to 250px */
+                function openNav() {
+                        document.getElementById("mySidenav").style.height = "250px";
+                        document.getElementById("mainPage").style.opacity = "0.2";
+                      
+
+
+                }
+
+                function showConfirm() {
+                        document.getElementById("confirm").style.height = "300px";
+                        document.getElementById("confirm").style.top = "50%";
+                        document.getElementById("mainPage").style.opacity = "0.2";
+
+                }
+
+                function hideConfirm() {
+                        document.getElementById("confirm").style.height = "0";
+                        document.getElementById("confirm").style.top = "0";
+                        document.getElementById("mainPage").style.opacity = "1.0";
+                }
+
+                function showDoubles() {
+                        document.getElementById("doubles").style.height = "300px";
+                        document.getElementById("doubles").style.top = "50%";
+                        document.getElementById("mainPage").style.opacity = "0.2";
+
+                }
+
+                function hideDoubles() {
+                        document.getElementById("doubles").style.height = "0";
+                        document.getElementById("doubles").style.top = "0";
+                        document.getElementById("mainPage").style.opacity = "1.0";
+                }
+
+
+                /* Set the width of the side navigation to 0 */
+                function closeNav() {
+                        document.getElementById("mySidenav").style.height = "0";
+                        document.getElementById("mainPage").style.opacity = "1.0";
+                }
+
+
+
+                function toggleFullScreen() {
+
+                        var doc = window.document;
+                        var docEl = doc.documentElement;
+
+                        var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen ||
+                                docEl.msRequestFullscreen;
+                        var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen ||
+                                doc.msExitFullscreen;
+                        alert(requestFullScreen)
+                        if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc
+                                .msFullscreenElement) {
+                                requestFullScreen.call(docEl);
+                        } else {
+                                cancelFullScreen.call(doc);
+                        }
+                }
+        </script>
+
+<% include partials/side-menu.ejs %>
+                <% include partials/confirm.ejs %>
+                        <% include partials/missedDoubles.ejs %>
+
+                                <div class="container" id="mainPage">
+
+
+                                        <div id="app-grid">
+                                                      
+                                                <div onclick="openNav()" id='menu-label'>
+                                                        <i class="fa fa-bars" aria-hidden="true"></i> IDL Scoreboard</div>
+                                                <div id="top-grid" class="app-grid-row">
+                                                        <div class="app-grid-row player-name player-1">
+                                                                <div class="grid-text" id="player-1">PLAYER1</div>
+                                                        </div>
+                                                        <div class="app-grid-row player-name player-2">
+                                                                <div class="grid-text" id="player-2">PLAYER2</div>
+                                                        </div>
+                                                        <div class="app-grid-row top-grid-heading">
+                                                                <div class="grid-text">REMAINING</div>
+                                                        </div>
+                                                        <div class="app-grid-row top-grid-heading">
+                                                                <div class="grid-text">LEGS</div>
+                                                        </div>
+                                                        <div class="app-grid-row top-grid-heading">
+                                                                <div class="grid-text">LEGS</div>
+                                                        </div>
+                                                        <div class="app-grid-row top-grid-heading">
+                                                                <div class="grid-text">REMAINING</div>
+                                                        </div>
+                                                        <div class="app-grid-row top-grid-remaining player-1">
+                                                                <div class="grid-text" id="remaining-player-1">501</div>
+                                                        </div>
+                                                        <div class="app-grid-row top-grid-legs player-1">
+                                                                <div class="grid-text" id="legs-player-1">2</div>
+                                                        </div>
+                                                        <div class="app-grid-row top-grid-legs player-2">
+                                                                <div class="grid-text" id="legs-player-2">1</div>
+                                                        </div>
+                                                        <div class="app-grid-row top-grid-remaining player-2">
+                                                                <div class="grid-text" id="remaining-player-2">471</div>
+                                                        </div>
+                                                        <div class="app-grid-row top-grid-info">
+                                                                <div class="grid-text">
+                                                                        <img src="/public/resources/logos/IDL_Logo_Lettering_White_50px.png">
+                                                                </div>
+                                                                <div class="grid-text" id="game-title"></div>
+                                                                <div class="grid-text">BEST OF 11 LEGS</div>
+                                                        </div>
+                                                </div>
+                                                <div id="details-grid" class="app-grid-row">
+
+
+                                                        <script>
+                                                                var objDiv = document.getElementById("details-grid");
+                                                                objDiv.scrollTop = objDiv.scrollHeight;
+                                                        </script>
+
+                                                </div>
+                                                <div id="calculator-grid" class="app-grid-row">
+
+                                                        <% var calculatorItems = [1,2,3,4,5,6,7,8,9,"UNDO",0,"ENTER"]
+                                        calculatorItems.forEach(function(item){ %>
+                                                                <div class="calculator-item">
+                                                                        <div class="grid-text" onclick="calculatorClick(this)" name="<%= item %>">
+                                                                                <%= item %>
+                                                                        </div>
+                                                                </div>
+
+                                                                <% }) %>
+
+                                                </div>
+                                        </div>
+
+                                </div>
+                                <script>
+                                        var match
+                                        var currentPlayer
+                                        var checkoutDarts
+                                        var missedDoubles
+                                        if (sessionStorage.match) {
+                                                match = JSON.parse(sessionStorage.match);
+                                                currentPlayer = match.players[0].playername
+                                              
+                                                console.log(match)
+                                        }
+                                        document.getElementById("player-1").innerHTML = match.players[0].playername;
+                                        document.getElementById("player-2").innerHTML = match.players[1].playername;
+                                        document.getElementById("game-title").innerHTML = match.gameTitle;
+                                        startNewLeg();
+
+
+                                        function addScore(player, leg, visit, score, dartsthrown, misseddoubles) {
+                                                this.player = player
+                                                this.leg = leg
+                                                this.visit = visit
+                                                this.score = score
+                                                this.dartsthrown = dartsthrown
+                                                this.misseddoubles = misseddoubles
+                                                this.finished = false
+
+                                        }
+
+                                        function calculatorClick(e, player) {
+                                                var digit = e.innerHTML.toString().trim()
+
+                                                if (digit == "UNDO") {
+                                                        undo();
+                                                } else if (digit == "ENTER") {
+                                                        enter();
+                                                } else {
+                                                        addDigit(digit);
+                                                }
+
+
+                                        }
+
+                                        function addDigit(digit) {
+
+                                                var scorebox = document.querySelector('.details-score-input.active')
+                                                var score = scorebox.value.toString().trim()
+                                                score = score == "0" ? "" : score
+
+                                                var newscore = score.length > 2 ? digit : score.concat(digit)
+                                                if (!isNaN(parseFloat(newscore))) {
+                                                        if (parseFloat(newscore) > 180) {
+                                                                newscore = 0
+                                                        }
+
+                                                } else {
+                                                        newscore = 0
+                                                }
+
+                                                scorebox.value = newscore
+
+                                        }
+
+                                        function undo() {
+                                                rs
+
+                                        }
+
+                                        function keyPressed(event) {
+                                                event.preventDefault();
+                                                if (event.keyCode === 13) {
+                                                        console.log(event.keyCode)
+                                                        enter();
+                                                }
+
+                                        }
+
+                                        function EndOfLeg() {
+                                                var scorebox = document.querySelector('.details-score-input.active');
+
+                                                var score = scorebox.value.toString().trim();
+                                                var player = scorebox.name == "player-1" ? match.players[0].playername :
+                                                        match.players[
+                                                                1].playername;
+                                                var leg = calculateLeg();
+                                                var visit = calculateVisit(leg, player);
+                                                var misseddoubles = missedDoubles;
+                                                var dartsthrown = checkoutDarts;
+                                                var s = new addScore(player, leg, visit, score, dartsthrown,
+                                                        misseddoubles);
+                                                s.finished = true
+                                                match.scores.push(s)
+                                                sessionStorage.match = JSON.stringify(match)
+                                                startNewLeg()
+                                        }
+
+                                        function postScore() {
+                                                var scorebox = document.querySelector('.details-score-input.active');
+
+                                                var score = scorebox.value.toString().trim();
+                                                var player = scorebox.name == "player-1" ? match.players[0].playername :
+                                                        match.players[
+                                                                1].playername;
+                                                var leg = calculateLeg();
+                                                var visit = calculateVisit(leg, player);
+                                                var misseddoubles = missedDoubles;
+                                                var dartsthrown = checkoutDarts;
+                                                var finished = checkFinished(score, player, leg)
+                                                if (finished) {
+                                                        showConfirm()
+                                                } else {
+                                                        var s = new addScore(player, leg, visit, score, dartsthrown,
+                                                                misseddoubles);
+                                                        match.scores.push(s)
+                                                        sessionStorage.match = JSON.stringify(match)
+                                                        calcScores(leg, scorebox.name)
+                                                        getNextToThrow()
+                                                }
+
+                                        }
+
+                                        function enter() {
+                                                var scorebox = document.querySelector('.details-score-input.active');
+
+                                                var score = scorebox.value.toString().trim();
+                                                var player = scorebox.name == "player-1" ? match.players[0].playername :
+                                                        match.players[
+                                                                1].playername;
+                                                var leg = calculateLeg();
+                                                var visit = calculateVisit(leg, player);
+
+                                                var dartsthrown = 3;
+                                                var misseddoubles = 0;
+                                                if (score != "") {
+                                                        if (score > 180 || score < 0 || !Number.isInteger(parseFloat(
+                                                                        score)) || isBust(score, player, leg)) {
+                                                                scorebox.value = ""
+                                                        } else {
+                                                                var remaining = checkRemaining(score, player, leg)
+                                                                if (remaining < 41) {
+                                                                        showDoubles()
+                                                                } else {
+                                                                        var s = new addScore(player, leg, visit, score,
+                                                                                dartsthrown, misseddoubles)
+                                                                        match.scores.push(s)
+                                                                        sessionStorage.match = JSON.stringify(match)
+                                                                        calcScores(leg, scorebox.name)
+                                                                        getNextToThrow()
+                                                                }
+
+                                                        }
+
+                                                }
+
+                                        }
+
+                                        function getNextToThrow() {
+                                                var leg = calculateLeg();
+                                                var visit1 = calculateVisit(leg, match.players[0].playername);
+                                                var visit2 = calculateVisit(leg, match.players[1].playername);
+                                                var order1 = match.players[0].order;
+                                                var order2 = match.players[1].order;
+                                                
+                                                var visit
+
+                                                var playerid
+                                                var otherid
+                                                if (visit1 > visit2) {
+                                                        playerid = ".player-2"
+                                                        otherid = ".player-1"
+                                                        visit = visit2
+                                                } else if (visit2 > visit1) {
+                                                        playerid = ".player-1"
+                                                        otherid = ".player-2"
+                                                        visit = visit1
+                                                } else {
+                                                        playerid = (leg % 2 == 1) ? ".player-1" : ".player-2";
+                                                        playerid = (leg % 2 == 1) ? (order1 ==1 ? ".player-1": ".player-2") : (order1 ==1 ? ".player-2": ".player-1")
+                                                        otherid = playerid == ".player-1" ? ".player-2" : ".player-1";
+                                                        visit = visit1
+                                                }
+                                                manageRows(visit);
+                                                deactiveateInputBox(otherid)
+                                                activateInputBox(playerid, visit);
+                                                missedDoubles = 0
+
+
+
+                                        }
+
+                                        function manageRows(visit) {
+                                                var str = ".details-grid-row[name=\"visit-" + visit + "\"]"
+                                                console.log(str)
+                                                if (document.querySelector(str) == null) {
+                                                        addNewRow(visit)
+                                                }
+                                        }
+
+                                        function calculateLeg() {
+                                                var leg = 1;
+                                                var scores = match.scores;
+                                                if (!scores.length == 0) {
+
+
+                                                        var legs = [];
+
+                                                        scores.forEach(function (score) {
+
+                                                                if (legs.indexOf(score.leg) === -1) {
+                                                                        legs.push(score.leg);
+                                                                }
+                                                        });
+
+
+                                                        legs.sort(function (a, b) {
+                                                                return a - b
+                                                        });
+
+                                                        leg = legs[legs.length - 1];
+
+                                                        leg = searchFinish(leg) ? leg + 1 : leg
+                                                }
+                                                return leg
+                                        }
+
+                                        function calculateVisit(leg, player) {
+                                                var visit = 1;
+                                                var scores = match.scores;
+                                                if (!scores.length == 0) {
+                                                        visit = 0
+                                                        scores.forEach(function (score) {
+                                                                if (score.leg == leg && score.player ==
+                                                                        player) {
+                                                                        if (score.visit > visit) {
+                                                                                visit = score.visit
+                                                                        }
+                                                                }
+                                                        })
+                                                        visit += 1
+                                                }
+                                                return visit
+                                        }
+
+                                        function searchFinish(leg) {
+                                                var finished = false;
+                                                var scores = match.scores;
+                                                if (!scores.length == 0) {
+                                                        scores.forEach(function (score) {
+                                                                if (score.leg == leg) {
+                                                                        if (score.finished == true) {
+                                                                                finished = true
+                                                                        }
+                                                                }
+                                                        })
+                                                }
+                                                return finished
+                                        }
+
+                                        function addNewRow(visit) {
+                                                var parentDiv = document.getElementById("details-grid");
+                                                var mainDiv = document.createElement("div");
+                                                mainDiv.classList.add("details-grid-row");
+                                                mainDiv.setAttribute("name", "visit-" + visit);
+                                                var numberOfDarts = visit * 3
+
+                                                var html =
+                                                        `
+                                
+                                                        <div class="details-remaining-item player-1 visit-${visit}" name="player-1">
+                                                                <div class="grid-text">
+                                                                       
+                                                                </div>
+                                                        </div>
+                                                        <div class="details-score-item player-1 visit-${visit}">
+
+                                                                <div class="grid-text">
+                                                                        <input class="details-score-input inactive" onkeyup = "keyPressed(event)" type="text" name="player-1"  disabled />
+                                                                </div>
+
+                                                        </div>
+                                                        <div class="details-darts-number visit-${visit} ">
+                                                                <div class="grid-text">${numberOfDarts}</div>
+                                                        </div>
+                                                        <div class="details-score-item player-2 visit-${visit}">
+                                                                <div class="grid-text">
+                                                                        <input class="details-score-input inactive" onkeyup = "keyPressed(event)" type="text" name="player-2"  disabled />
+                                                                </div>
+                                                        </div>
+                                                        <div class="details-remaining-item player-2 visit-${visit}">
+                                                                <div class="grid-text"></div>
+                                                        </div>
+                            `
+
+                                                mainDiv.innerHTML = html;
+                                                parentDiv.appendChild(mainDiv)
+
+                                        }
+
+                                        function startNewLeg() {
+                                                var parentDiv = document.getElementById("details-grid");
+                                                parentDiv.innerHTML = "";
+                                                document.getElementById("remaining-player-1").innerHTML = match.startCount;
+                                                document.getElementById("remaining-player-2").innerHTML = match.startCount;
+
+                                                addNewRow(1);
+                                                addNewRow(2);
+                                                addNewRow(3);
+                                                addNewRow(4);
+                                                calcLegsWon();
+                                                getNextToThrow();
+                                                checkoutDarts = 3;
+                                        };
+
+                                        function activateInputBox(playerid, visit) {
+                                                var elements = document.querySelectorAll(playerid);
+                                                elements.forEach(function (elem) {
+                                                        elem.classList.remove('player-opaque')
+                                                });
+                                                var element = document.querySelector(".details-score-item" + playerid +
+                                                        ".visit-" +
+                                                        visit)
+                                                var div = element.querySelector("div");
+                                                var input = div.querySelector("input");
+                                                input.classList.add("active")
+                                                input.classList.remove("inactive");
+                                                input.removeAttribute("disabled");
+                                                input.focus();
+                                        }
+
+                                        function deactiveateInputBox(playerid) {
+                                                var elements = document.querySelectorAll(playerid);
+                                                elements.forEach(function (elem) {
+                                                        elem.classList.add('player-opaque')
+                                                });
+                                                var element;
+                                                if (document.querySelector(".active") !== null) {
+                                                        element = document.querySelector(".active");
+                                                        element.classList.remove("active");
+                                                        element.classList.add("inactive");
+                                                        element.setAttribute("disabled", "true");
+
+                                                }
+
+                                        }
+
+                                        function calcLegsWon() {
+                                                match.players.forEach(function (player) {
+                                                        var legs = 0
+                                                        match.scores.forEach(function (score) {
+                                                                if (score.player ==
+                                                                        player.playername &&
+                                                                        score.finished ==
+                                                                        true) {
+                                                                        legs += 1;
+                                                                }
+
+                                                        })
+                                                        document.getElementById("legs-" + player.id).innerHTML =
+                                                                legs
+                                                })
+                                        }
+
+                                        function calcScores(leg, playerid) {
+                                                var element = document.getElementById("remaining-" + playerid)
+                                                var player = playerid == "player-1" ? match.players[0].playername :
+                                                        match.players[1].playername
+                                                var totalScore = 0
+                                                var lastTotal = 0
+                                                var startCount = match.startCount
+                                                var remaining
+                                                match.scores.forEach(function (score) {
+
+                                                        if (score.player == player && score.leg == leg) {
+
+                                                                lastTotal = startCount - totalScore;
+
+                                                                totalScore += parseFloat(score.score);
+                                                                remaining = startCount - totalScore
+                                                                var element = document.querySelector(
+                                                                        ".details-remaining-item." +
+                                                                        playerid + ".visit-" +
+                                                                        score.visit);
+                                                                var div = element.querySelector("div");
+                                                                div.innerHTML = remaining;
+                                                        }
+                                                })
+
+
+
+                                                var id = setInterval(function () {
+                                                        if (lastTotal <= remaining) {
+                                                                clearInterval(id);
+                                                        } else {
+                                                                lastTotal--
+                                                                element.innerHTML = lastTotal;
+                                                        }
+                                                }, 10);
+
+                                        }
+
+                                        function isBust(score, player, leg) {
+                                                var bust = false
+                                                var totalScore = parseFloat(score)
+                                                var startCount = match.startCount
+                                                match.scores.forEach(function (score) {
+                                                        if (score.player == player && score.leg == leg) {
+                                                                totalScore += parseFloat(score.score)
+                                                        }
+                                                })
+                                                var remaining = startCount - totalScore
+                                                bust = (remaining < 2 && remaining != 0) ? true : false;
+
+                                                return bust
+                                        }
+
+                                        function checkFinished(score, player, leg) {
+                                                var finished = false
+                                                var totalScore = parseFloat(score)
+                                                var startCount = match.startCount
+                                                match.scores.forEach(function (score) {
+                                                        if (score.player == player && score.leg == leg) {
+                                                                totalScore += parseFloat(score.score)
+                                                        }
+                                                })
+                                                var remaining = startCount - totalScore
+                                                finished = (remaining == 0) ? true : false;
+                                                return finished
+                                        }
+
+                                        function checkRemaining(score, player, leg) {
+
+                                                var totalScore = parseFloat(score)
+                                                var startCount = match.startCount
+                                                match.scores.forEach(function (score) {
+                                                        if (score.player == player && score.leg == leg) {
+                                                                totalScore += parseFloat(score.score)
+                                                        }
+                                                })
+                                                var remaining = startCount - totalScore
+                                                return remaining
+                                        }
+
+                                        function confirmNumberClicked(div) {
+                                                checkoutDarts = parseFloat(div.innerHTML.trim())
+                                                EndOfLeg()
+                                                hideConfirm();
+                                        }
+
+                                        function undoCheckout() {
+                                                hideConfirm();
+                                        }
+
+                                        function missedDoublesClicked(div) {
+                                                missedDoubles = parseFloat(div.innerHTML.trim())
+                                                postScore()
+                                                hideDoubles();
+                                        }
+                                </script>
+</body>
+
+</html>

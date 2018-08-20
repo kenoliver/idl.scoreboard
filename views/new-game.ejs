@@ -1,0 +1,180 @@
+<html>
+
+<% include partials/head.ejs %>
+
+    <body>
+
+
+        <div class="container">
+
+            <div id="new-game-grid">
+                <div class="row justify-content-center add-player-input new-game-header">
+                    <div>New Match</div>
+                </div>
+                <div class="row justify-content-center label-div">
+                    <label class="player-label">
+                        Player 1
+                    </label>
+                </div>
+                <div class="row justify-content-center add-player-input">
+                    <select class="add-player-name" id="player1">
+                            <option value="Ken Oliver">Ken Oliver</option>
+                            <option value="Joe Smith">Joe Smith</option>
+                            <option value="Michael Smith">Michael Smith</option>
+                            <option value="R.SMITH">R SMITH</option>
+                            <option value="Mathers">Mathers</option>
+                            <option value="VAN BARNEVELD">VAN BARNEVELD</option>
+                            <option value="GARDNER">GARDNER</option>
+                            <option value="K. ANDERSON">K. ANDERSON</option>
+                            <option value="THOMPSON">THOMPSON</option>
+                            <option value="WRIGHT">WRIGHT</option>
+                            <option value="VAN GERWYN">VAN GERWYN</option>
+                            <option value="CROSS">CROSS</option>
+                            <option value="PUSEY">PUSEY</option>
+                    </select>
+                </div>
+                <div class="row justify-content-center">
+                    <label class="switch">
+                        <input type="radio" id="first-to-throw-player1" name="first">
+                        <span class="slider round"></span>
+                    </label>
+                    <label style="font-size:.5em;padding-left:5px">First To Throw </label>
+                </div>
+                <div class="row justify-content-center label-div">
+                    <label class="player-label">
+                        Player 2
+                    </label>
+                </div>
+                <div class="row justify-content-center add-player-input">
+                    <select class="add-player-name" id="player2">
+
+                            <option value="Ken Oliver">Ken Oliver</option>
+                            <option value="Joe Smith">Joe Smith</option>
+                            <option value="Michael Smith">Michael Smith</option>
+                            <option value="R.SMITH">R SMITH</option>
+                            <option value="Mathers">Mathers</option>
+                            <option value="VAN BARNEVELD">VAN BARNEVELD</option>
+                            <option value="GARDNER">GARDNER</option>
+                            <option value="K. ANDERSON">K. ANDERSON</option>
+                            <option value="THOMPSON">THOMPSON</option>
+                            <option value="WRIGHT">WRIGHT</option>
+                            <option value="VAN GERWYN">VAN GERWYN</option>
+                            <option value="CROSS">CROSS</option>
+                            <option value="PUSEY">PUSEY</option>
+                    </select>
+                </div>
+
+                <div class="row justify-content-center">
+
+                    <label class="switch">
+                        <input type="radio" id="first-to-throw-player1" name="first">
+                        <span class="slider round"></span>
+                    </label>
+                    </label>
+                    <label style="font-size:.5em;padding-left:5px">First To Throw </label>
+                </div>
+                <div class="row justify-content-center label-div">
+                    <label class="player-label">
+                        Type Of Game
+                    </label>
+                </div>
+                <div class="row justify-content-center add-player-input">
+                    <select class="add-player-name" id="game-type">
+                        <option value="X01">X01</option>
+                    </select>
+                </div>
+                <div class="row justify-content-center add-player-input">
+                    <input class="add-new-game" id="game-type-value" type="text" value="501">
+
+                </div>
+                <div class="row justify-content-center label-div">
+                    <label class="player-label">
+                        No. of Legs
+                    </label>
+                </div>
+                <div class="row justify-content-center add-player-input">
+                    <select class="add-player-name">
+                        <option value="Best Of">Best Of</option>
+                    </select>
+                </div>
+                <div class="row justify-content-center add-player-input">
+                    <input class="add-new-game" id="number-of-legs" type="text" value="11">
+
+                </div>
+
+                <div class="row justify-content-center label-div">
+                    <label class="player-label">
+                        Game Title
+                    </label>
+                </div>
+
+                <div class="row justify-content-center add-player-input">
+                    <input class="add-new-game" id="game-title" type="text" value="League Play">
+
+                </div>
+                <div class="row justify-content-center add-player-input">
+
+
+                </div>
+                <div class="row justify-content-center add-player-input">
+
+
+                </div>
+
+
+                <div class="row justify-content-center add-player-input">
+                    <button class="new-game-middle" type="button" onClick="startMatch()">Start New Match</button>
+
+                </div>
+
+
+            </div>
+        </div>
+        <script>
+            function startMatch() {
+                console.log("starting Match");
+                var match = new Match
+                match.gameType = document.getElementById("game-type").value
+                match.startCount = document.getElementById("game-type-value").value
+                match.gameTitle = document.getElementById("game-title").value
+                match.numberOfLegs = document.getElementById("number-of-legs").value
+                var player1 = document.getElementById("player1").value
+                var player2 = document.getElementById("player2").value
+                var radio1 = document.getElementById("first-to-throw-player1").checked
+                if (radio1) {
+                    match.addPlayer(player1,1);
+                    match.addPlayer(player2,2)
+                } else {
+                    match.addPlayer(player1,2);
+                    match.addPlayer(player2,1)
+                }
+                sessionStorage.match = JSON.stringify(match)
+                console.log(sessionStorage.match)
+                window.location.href = "/scorer"
+            }
+
+            function Match() {
+                this.gameType = "X01"
+                this.startCount = 501
+                this.gameTitle = ""
+                this.numberOfLegs = 3
+                this.players = []
+                this.scores = []
+                this.addPlayer = function (name , order) {
+                    var number = this.players.length + 1
+                    var id = "player-" + number
+                    var p = new player(name, order,id)
+                    this.players.push(p)
+                }
+              
+                function player(name, order , id) {
+                    this.playername = name
+                    this.order = order
+                    this.id = id
+                }
+               
+            }
+        </script>
+    </body>
+
+</html>
