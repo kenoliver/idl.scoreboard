@@ -387,7 +387,7 @@ div.main-menu-item:hover {
 .side-nav {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 20% 20% 20% 20% 20%;
+    grid-template-rows: 10% 10% 10% 10% 10% 10% 10%;
     align-items:center;
     background-color: #262626;
     width: 400px;
@@ -399,6 +399,7 @@ div.main-menu-item:hover {
     text-align: center;
     font-size: 20px;
     padding: 0px;
+   
     position: fixed;
  
     z-index: 1;
@@ -660,7 +661,7 @@ hr {
 #stats-grid {
     display: grid;
     grid-template-columns: 1.5fr 1fr 1fr 1fr 1.5fr;
-    grid-template-rows: 4% 10% 5% 7% 7% 7% 7% 7% 7% 7% 7% 7% 7% 7%;
+    grid-template-rows: 4% 10% 5% 5% 5% 5% 5% 5% 5% 5% 5%  5% 5% 5% 5% 5% 5% 5%;
     grid-row-gap: 2px;
     align-items: center;
     width: 100%;
@@ -668,6 +669,7 @@ hr {
     padding: 0px;
     max-width: 100%;
     box-sizing: border-box;
+   
    
     
 }

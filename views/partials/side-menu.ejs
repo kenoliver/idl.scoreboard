@@ -1,14 +1,33 @@
 <script>
         function openNav() {
-                document.getElementById("mySidenav").style.height = "300px";
+                document.getElementById("mySidenav").style.paddingTop = "80px";
+                document.getElementById("mySidenav").style.height = "400px";
                 document.getElementById("mainPage").style.opacity = "0.2";
+               
         }
 
         function closeNav() {
                 document.getElementById("mySidenav").style.height = "0";
                 document.getElementById("mainPage").style.opacity = "1.0";
+                document.getElementById("mySidenav").style.paddingTop = "0";
         }
+        function toggleFullScreen() {
 
+var doc = window.document;
+var docEl = doc.documentElement;
+
+var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen ||
+        docEl.msRequestFullscreen;
+var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen ||
+        doc.msExitFullscreen;
+alert(requestFullScreen)
+if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc
+        .msFullscreenElement) {
+        requestFullScreen.call(docEl);
+} else {
+        cancelFullScreen.call(doc);
+}
+}
         
 </script>
 <div id="mySidenav" class="side-nav">
@@ -17,7 +36,9 @@
 
         <% if (pageID =="scorer"){ %>
                 <a href="/new-game">New Match</a>
-                <a href="/stats">View Statistics</a>
+                <a href="/stats">Game Stats</a>
+                <a href="/bestlegs">Best Legs</a>
+                <a href="/checkouts">Checkouts</a>
                 <a href="#">End Game</a>
                 <a href="javascript:void(0)" onclick="toggleFullScreen()">Full Screen</a> 
 
@@ -26,7 +47,9 @@
         <% }else{ %>
         <a href="/new-game">New Match</a>
         <a href="/scorer">Continue Match</a>
-        <a href="/new-game">New Match</a>
+        <a href="/stats">Game Stats</a>
+        <a href="/bestlegs">Best Legs</a>
+        <a href="/checkouts">Checkouts</a>
         <a href="#">End Game</a>
         <a href="javascript:void(0)" onclick="toggleFullScreen()">Full Screen</a>
         <% }  %>       

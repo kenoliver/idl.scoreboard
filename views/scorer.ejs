@@ -39,23 +39,7 @@
                 }
 
 
-                function toggleFullScreen() {
-
-                        var doc = window.document;
-                        var docEl = doc.documentElement;
-
-                        var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen ||
-                                docEl.msRequestFullscreen;
-                        var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen ||
-                                doc.msExitFullscreen;
-                        alert(requestFullScreen)
-                        if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc
-                                .msFullscreenElement) {
-                                requestFullScreen.call(docEl);
-                        } else {
-                                cancelFullScreen.call(doc);
-                        }
-                }
+               
         </script>
 
         <% include partials/side-menu.ejs %>
@@ -510,7 +494,7 @@
                                                         var totalScore = 0
                                                         var lastTotal = 0
                                                         var startCount = match.startCount
-                                                        var remaining
+                                                        var remaining =startCount
 
                                                         match.scores.forEach(function (score) {
 
@@ -530,12 +514,12 @@
                                                         
                                                         if (player.id == lastToThrow){
                                                                 var id = setInterval(function () {
-                                                        if (lastTotal <= remaining) {
-                                                                clearInterval(id);
-                                                        } else {
-                                                                lastTotal--
-                                                                largeRemainingDiv.innerHTML = lastTotal;
-                                                        }
+                                                                if (lastTotal <= remaining) {
+                                                                        clearInterval(id);
+                                                                } else {
+                                                                        lastTotal--
+                                                                        largeRemainingDiv.innerHTML = lastTotal;
+                                                                }
                                                          }, 10);
 
                                                         }else{
