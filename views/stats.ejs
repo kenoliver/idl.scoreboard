@@ -4,11 +4,12 @@
 
     <body>
 
-
+        <% include partials/side-menu.ejs %>
         <div class="container">
 
             <div id="stats-grid">
-
+                <div onclick="openNav()" id='menu-label'>
+                    <i class="fa fa-bars" aria-hidden="true"></i> IDL Scoreboard</div>
                 <div class="row justify-content-center confirm-row stats-player-1">
                     <div class="stats-player ">
                         <div class="stats-text" id="name-player-1"  >
@@ -126,10 +127,10 @@
                 })
                 console.log("totalFinishes: " + totalFinishes)
                 console.log("misseddoubles: " + misseddoubles)
-                obj.avg = totalscore / totalDarts * 3
-                obj.avg9 = totalscoreFirstNine / totalDartsFirstNine * 3
+                obj.avg = totalDarts == 0 ? 0 : totalscore / totalDarts * 3
+                obj.avg9 = totalDartsFirstNine == 0 ? 0 : totalscoreFirstNine / totalDartsFirstNine * 3
                 obj.misseddoubles = misseddoubles
-                obj.doubles = totalFinishes / (misseddoubles +totalFinishes) * 100
+                obj.doubles = (misseddoubles +totalFinishes == 0) ? 0 : totalFinishes / (misseddoubles +totalFinishes) * 100
                 obj.checkouts = checkouts.sort(function (a, b) {
                     return b - a
                 });
@@ -155,13 +156,14 @@
                 document.getElementById("tonne-" + player.id).innerHTML = stats.tonne;
                 document.getElementById("tonne40-" + player.id).innerHTML = stats.tonne40;
                 document.getElementById("tonne80-" + player.id).innerHTML = stats.tonne80;
-                document.getElementById("checkout-" + player.id).innerHTML = stats.checkouts[0];
-                document.getElementById("bestleg-" + player.id).innerHTML = stats.bestlegs[0];
-                document.getElementById("worstleg-" + player.id).innerHTML = stats.bestlegs[stats.bestlegs.length-1];
+                document.getElementById("checkout-" + player.id).innerHTML = stats.checkouts.length == 0 ? 0: stats.checkouts[0];
+                document.getElementById("bestleg-" + player.id).innerHTML = stats.bestlegs.length == 0 ? 0 : stats.bestlegs[0];
+                document.getElementById("worstleg-" + player.id).innerHTML = stats.bestlegs.length == 0 ? 0 : stats.bestlegs[stats.bestlegs.length-1];
                 function avg(){
-                    var sum = stats.bestlegs.reduce(function(a, b) { return a + b; });
-                    var legs = stats.checkouts.length;
-                    var avg = (stats.checkouts.length !=0) ? sum/legs : 0;
+
+                    var sum = (stats.bestlegs.length ==0) ? 0 : stats.bestlegs.reduce(function(a, b) { return a + b; });
+                    var legs = stats.bestlegs.length;
+                    var avg = (stats.bestlegs.length ==0) ? 0 : sum/legs;
                     return avg.toFixed(2)
                 };
                 document.getElementById("avgleg-" + player.id).innerHTML = avg();

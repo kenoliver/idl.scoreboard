@@ -10,13 +10,7 @@
 
         <script>
                 /* Set the width of the side navigation to 250px */
-                function openNav() {
-                        document.getElementById("mySidenav").style.height = "250px";
-                        document.getElementById("mainPage").style.opacity = "0.2";
-                      
 
-
-                }
 
                 function showConfirm() {
                         document.getElementById("confirm").style.height = "300px";
@@ -45,14 +39,6 @@
                 }
 
 
-                /* Set the width of the side navigation to 0 */
-                function closeNav() {
-                        document.getElementById("mySidenav").style.height = "0";
-                        document.getElementById("mainPage").style.opacity = "1.0";
-                }
-
-
-
                 function toggleFullScreen() {
 
                         var doc = window.document;
@@ -72,7 +58,7 @@
                 }
         </script>
 
-<% include partials/side-menu.ejs %>
+        <% include partials/side-menu.ejs %>
                 <% include partials/confirm.ejs %>
                         <% include partials/missedDoubles.ejs %>
 
@@ -80,7 +66,7 @@
 
 
                                         <div id="app-grid">
-                                                      
+
                                                 <div onclick="openNav()" id='menu-label'>
                                                         <i class="fa fa-bars" aria-hidden="true"></i> IDL Scoreboard</div>
                                                 <div id="top-grid" class="app-grid-row">
@@ -136,9 +122,9 @@
                                                         <% var calculatorItems = [1,2,3,4,5,6,7,8,9,"UNDO",0,"ENTER"]
                                         calculatorItems.forEach(function(item){ %>
                                                                 <div class="calculator-item">
-                                                                        <div class="grid-text" onclick="calculatorClick(this)" name="<%= item %>">
+                                                                        <button class="button-text" onclick="calculatorClick(this)" name="<%= item %>">
                                                                                 <%= item %>
-                                                                        </div>
+                                                                        </button>
                                                                 </div>
 
                                                                 <% }) %>
@@ -149,19 +135,21 @@
                                 </div>
                                 <script>
                                         var match
-                                        var currentPlayer
-                                        var checkoutDarts
+                                        var lastToThrow
+                                        var checkoutDarts =3
                                         var missedDoubles
                                         if (sessionStorage.match) {
                                                 match = JSON.parse(sessionStorage.match);
-                                                currentPlayer = match.players[0].playername
-                                              
                                                 console.log(match)
                                         }
                                         document.getElementById("player-1").innerHTML = match.players[0].playername;
                                         document.getElementById("player-2").innerHTML = match.players[1].playername;
                                         document.getElementById("game-title").innerHTML = match.gameTitle;
-                                        startNewLeg();
+                                        getCurrentState();
+                                        getNextToThrow();
+                                      
+                                        
+                                        // startNewLeg();
 
 
                                         function addScore(player, leg, visit, score, dartsthrown, misseddoubles) {
@@ -210,7 +198,9 @@
                                         }
 
                                         function undo() {
-                                                rs
+                                               match.scores.pop();
+                                               getCurrentState();
+                                               getNextToThrow();
 
                                         }
 
@@ -261,7 +251,7 @@
                                                                 misseddoubles);
                                                         match.scores.push(s)
                                                         sessionStorage.match = JSON.stringify(match)
-                                                        calcScores(leg, scorebox.name)
+                                                       getCurrentState()
                                                         getNextToThrow()
                                                 }
 
@@ -271,28 +261,29 @@
                                                 var scorebox = document.querySelector('.details-score-input.active');
 
                                                 var score = scorebox.value.toString().trim();
-                                                var player = scorebox.name == "player-1" ? match.players[0].playername :
+                                                var player = scorebox.name == "player-1" ? match.players[0] :
                                                         match.players[
-                                                                1].playername;
+                                                                1];
                                                 var leg = calculateLeg();
-                                                var visit = calculateVisit(leg, player);
+                                                var visit = calculateVisit(leg, player.playername);
 
                                                 var dartsthrown = 3;
                                                 var misseddoubles = 0;
                                                 if (score != "") {
                                                         if (score > 180 || score < 0 || !Number.isInteger(parseFloat(
-                                                                        score)) || isBust(score, player, leg)) {
+                                                                        score)) || isBust(score, player.playername, leg)) {
                                                                 scorebox.value = ""
                                                         } else {
-                                                                var remaining = checkRemaining(score, player, leg)
+                                                                var remaining = checkRemaining(score, player.playername, leg)
                                                                 if (remaining < 41) {
                                                                         showDoubles()
                                                                 } else {
-                                                                        var s = new addScore(player, leg, visit, score,
+                                                                        var s = new addScore(player.playername, leg, visit, score,
                                                                                 dartsthrown, misseddoubles)
                                                                         match.scores.push(s)
                                                                         sessionStorage.match = JSON.stringify(match)
-                                                                        calcScores(leg, scorebox.name)
+                                                                        lastToThrow = player.id
+                                                                       getCurrentState()
                                                                         getNextToThrow()
                                                                 }
 
@@ -308,7 +299,7 @@
                                                 var visit2 = calculateVisit(leg, match.players[1].playername);
                                                 var order1 = match.players[0].order;
                                                 var order2 = match.players[1].order;
-                                                
+
                                                 var visit
 
                                                 var playerid
@@ -323,7 +314,9 @@
                                                         visit = visit1
                                                 } else {
                                                         playerid = (leg % 2 == 1) ? ".player-1" : ".player-2";
-                                                        playerid = (leg % 2 == 1) ? (order1 ==1 ? ".player-1": ".player-2") : (order1 ==1 ? ".player-2": ".player-1")
+                                                        playerid = (leg % 2 == 1) ? (order1 == 1 ? ".player-1" :
+                                                                ".player-2") : (order1 == 1 ? ".player-2" :
+                                                                ".player-1")
                                                         otherid = playerid == ".player-1" ? ".player-2" : ".player-1";
                                                         visit = visit1
                                                 }
@@ -508,43 +501,71 @@
                                                 })
                                         }
 
-                                        function calcScores(leg, playerid) {
-                                                var element = document.getElementById("remaining-" + playerid)
-                                                var player = playerid == "player-1" ? match.players[0].playername :
-                                                        match.players[1].playername
-                                                var totalScore = 0
-                                                var lastTotal = 0
-                                                var startCount = match.startCount
-                                                var remaining
-                                                match.scores.forEach(function (score) {
+                                        function getCurrentState() {
+                                                var leg = calculateLeg();
+                                                document.getElementById("details-grid").innerHTML = "";
+                                                match.players.forEach(function (player) {
+                                                        var largeRemainingDiv = document.getElementById(
+                                                                "remaining-" + player.id)
+                                                        var totalScore = 0
+                                                        var lastTotal = 0
+                                                        var startCount = match.startCount
+                                                        var remaining
 
-                                                        if (score.player == player && score.leg == leg) {
+                                                        match.scores.forEach(function (score) {
 
-                                                                lastTotal = startCount - totalScore;
+                                                                if (score.player == player.playername && score.leg == leg) {
+                                                                        lastTotal =startCount - totalScore;
+                                                                        totalScore += parseFloat(score.score);
+                                                                        remaining =startCount - totalScore;
+                                                                        manageRows(score.visit)
+                                                                        
+                                                                        var divRemaining  =getDetailItemDiv(player.id,score.visit,"remaining")      
+                                                                        divRemaining.innerHTML =remaining;
 
-                                                                totalScore += parseFloat(score.score);
-                                                                remaining = startCount - totalScore
-                                                                var element = document.querySelector(
-                                                                        ".details-remaining-item." +
-                                                                        playerid + ".visit-" +
-                                                                        score.visit);
-                                                                var div = element.querySelector("div");
-                                                                div.innerHTML = remaining;
-                                                        }
-                                                })
-
-
-
-                                                var id = setInterval(function () {
+                                                                        var divScore =getDetailItemDiv(player.id,score.visit,"score")      
+                                                                        divScore.innerHTML = score.score;
+                                                                }
+                                                        })
+                                                        
+                                                        if (player.id == lastToThrow){
+                                                                var id = setInterval(function () {
                                                         if (lastTotal <= remaining) {
                                                                 clearInterval(id);
                                                         } else {
                                                                 lastTotal--
-                                                                element.innerHTML = lastTotal;
+                                                                largeRemainingDiv.innerHTML = lastTotal;
                                                         }
-                                                }, 10);
+                                                         }, 10);
+
+                                                        }else{
+                                                                largeRemainingDiv.innerHTML =remaining
+                                                        }
+                                                        
+
+
+
+
+
+                                                });
+
+                                                calcLegsWon();
+                                                lastToThrow = null
 
                                         }
+
+                                        function getDetailItemDiv(playerid, visit, itemname) {
+                                                var div = document.querySelector(
+                                                        ".details-" + itemname + "-item." +
+                                                        playerid + ".visit-" +
+                                                        visit);
+                                                var childdiv = div.querySelector("div");
+                                                return childdiv
+
+                                        }
+
+
+                                        
 
                                         function isBust(score, player, leg) {
                                                 var bust = false

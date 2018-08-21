@@ -6,7 +6,7 @@ router.get('/scorer', function (req, res) {
   
   res.render('scorer', {
     pageTitle: 'Darts Scoreboard',
-    pageID: 'dartsScoreboard'
+    pageID: 'scorer'
   });
 });
 
