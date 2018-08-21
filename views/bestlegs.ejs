@@ -98,6 +98,7 @@
                         var playerid
                         var totalDarts = score.visit * 3 - 3 + score.dartsthrown
                         match.players.forEach(function(player){
+                            document.getElementById("name-" + player.id).innerHTML = player.playername
                             if (score.player == player.playername){
                                 playerid=player.id
                             }
@@ -108,11 +109,30 @@
 
                 })
             }
+           
+
+            function getScore(){
+                var player1=0
+                var player2 =0
+                match.scores.forEach(function(score){
+                    if(score.finished){
+                        if (score.player == match.players[0].playername){
+                            player1++
+                        
+                        }else{
+                            player2 ++
+                        }
+                    }
+                })
+                document.getElementById("stats-final-score").innerHTML = player1 + " - " + player2
+            }
 
             var match = JSON.parse(sessionStorage.match);
             var player1
             var player2
             getAllCheckouts();
+            getScore()
+          
 
         </script>
 

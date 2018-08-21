@@ -388,6 +388,7 @@ div.main-menu-item:hover {
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 10% 10% 10% 10% 10% 10% 10%;
+    grid-row-gap: 15px;
     align-items:center;
     background-color: #262626;
     width: 400px;
@@ -418,9 +419,9 @@ div.main-menu-item:hover {
 /* The navigation menu links */
 
 .side-nav a {
-    padding: 8px 8px 8px 32px;
+   
     text-decoration: none;
-    font-size: 1em;
+    font-size:1.5em;
     color: white;
     display: block;
     transition: 0.3s;
