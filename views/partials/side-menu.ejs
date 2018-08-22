@@ -3,33 +3,44 @@
                 document.getElementById("mySidenav").style.paddingTop = "80px";
                 document.getElementById("mySidenav").style.height = "500px";
                 document.getElementById("mainPage").style.opacity = "0.2";
-               
+
         }
 
         function closeNav() {
                 document.getElementById("mySidenav").style.paddingTop = "0";
                 document.getElementById("mySidenav").style.height = "0";
                 document.getElementById("mainPage").style.opacity = "1.0";
-               
+
         }
+
         function toggleFullScreen() {
 
-var doc = window.document;
-var docEl = doc.documentElement;
+                var doc = window.document;
+                var docEl = doc.documentElement;
 
-var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen ||
-        docEl.msRequestFullscreen;
-var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen ||
-        doc.msExitFullscreen;
+                var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen ||
+                        docEl.msRequestFullscreen;
+                var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen ||
+                        doc.msExitFullscreen;
 
-if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc
-        .msFullscreenElement) {
-        requestFullScreen.call(docEl);
-} else {
-        cancelFullScreen.call(doc);
-}
-}
-        
+                if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc
+                        .msFullscreenElement) {
+                        requestFullScreen.call(docEl);
+                } else {
+                        cancelFullScreen.call(doc);
+                }
+        }
+
+        function EndGame(){
+                var matches =[]
+                if (localStorage.matches){
+                        var matches = JSON.parse(localStorage.matches)
+                       
+                }
+                matches.push(JSON.parse(sessionStorage.match))
+                localStorage.matches = JSON.stringify(matches)
+                window.location.href = "/stats";
+        }
 </script>
 <div id="mySidenav" class="side-nav">
 
@@ -40,36 +51,19 @@ if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreen
                 <a href="/stats">Game Stats</a>
                 <a href="/bestlegs">Best Legs</a>
                 <a href="/checkouts">Checkouts</a>
-                <a href="#">End Game</a>
-                <a href="javascript:void(0)" onclick="toggleFullScreen()">Full Screen</a> 
+                <a href="javascript:void(0)" onclick="EndGame()">End Game</a>
+                <a href="javascript:void(0)" onclick="toggleFullScreen()">Full Screen</a>
 
 
 
-        <% }else{ %>
-        <a href="/new-game">New Match</a>
-        <a href="/scorer">Continue Match</a>
-        <a href="/stats">Game Stats</a>
-        <a href="/bestlegs">Best Legs</a>
-        <a href="/checkouts">Checkouts</a>
-        <a href="#">End Game</a>
-        <a href="javascript:void(0)" onclick="toggleFullScreen()">Full Screen</a>
-        <% }  %>       
+                <% }else{ %>
+                        <a href="/new-game">New Match</a>
+                        <a href="/scorer">Continue Match</a>
+                        <a href="/stats">Game Stats</a>
+                        <a href="/bestlegs">Best Legs</a>
+                        <a href="/checkouts">Checkouts</a>
+                        <a href="javascript:void(0)" onclick="EndGame()">End Game</a>
+                        <a href="javascript:void(0)" onclick="toggleFullScreen()">Full Screen</a>
+                        <% }  %>
 </div>
 
-<script>
-       
-
-var doc = window.document;
-var docEl = doc.documentElement;
-
-var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen ||
-        docEl.msRequestFullscreen;
-
-
-
-        requestFullScreen.call(docEl);
-
-
-
-        
-</script>

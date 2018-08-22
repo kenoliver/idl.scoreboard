@@ -55,7 +55,7 @@
                                                         <i class="fa fa-bars" aria-hidden="true"></i> IDL Scoreboard</div>
                                                 <div id="top-grid" class="app-grid-row">
                                                         <div class="app-grid-row player-name player-1">
-                                                                <div class="grid-text" id="player-1">PLAYER1</div>
+                                                                <div class="grid-text" id="player-1"> PLAYER1</div>
                                                         </div>
                                                         <div class="app-grid-row player-name player-2">
                                                                 <div class="grid-text" id="player-2">PLAYER2</div>
@@ -118,6 +118,11 @@
 
                                 </div>
                                 <script>
+                                        var flags={
+    USA:"flag-icon-us",
+    UK:"flag-icon-gb-eng",
+
+}
                                         var match
                                         var lastToThrow
                                         var checkoutDarts =3
@@ -126,8 +131,8 @@
                                                 match = JSON.parse(sessionStorage.match);
                                                 console.log(match)
                                         }
-                                        document.getElementById("player-1").innerHTML = match.players[0].playername;
-                                        document.getElementById("player-2").innerHTML = match.players[1].playername;
+                                        document.getElementById("player-1").innerHTML = `<span id="flag" class="flag-icon ${flags.UK} pull-left"></span><span class="big-player-name">${match.players[0].playername}</span>`;
+                                        document.getElementById("player-2").innerHTML = `<span id="flag" class="flag-icon ${flags.UK} pull-left"></span><span class="big-player-name">${match.players[1].playername}</span>`;
                                         document.getElementById("game-title").innerHTML = match.gameTitle;
                                         getCurrentState();
                                         getNextToThrow();

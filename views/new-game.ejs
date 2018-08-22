@@ -13,24 +13,58 @@
                 </div>
                 <div class="row justify-content-center label-div">
                     <label class="player-label">
+                        Venue
+                    </label>
+                </div>
+
+                <div class="row justify-content-center add-player-input">
+                    <select class="add-player-name" id="venues" onChange="venueChange(this.id)">
+                        <option value=""></option>
+                        <option value="Victoria">Victoria</option>
+                        <option value="Morden">Morden</option>
+                        <option value="Southwark">Southwark</option>
+                        <option value="Harlow">Harlow</option>
+                    </select>
+                </div>
+                <div class="row justify-content-center add-player-input">
+
+
+                </div>
+                <div class="row justify-content-center label-div">
+                    <label class="player-label">
+                        Division
+                    </label>
+                </div>
+
+                <div class="row justify-content-center add-player-input">
+                    <select class="add-player-name" id="divisions" onChange="divisionChange(this.id)">
+                        <option value=""></option>
+                        <option value="Victoria">Victoria</option>
+                        <option value="Morden">Morden</option>
+                        <option value="Southwark">Southwark</option>
+                        <option value="Harlow">Harlow</option>
+                    </select>
+                </div>
+                <div class="row justify-content-center add-player-input">
+
+
+                </div>
+
+
+
+
+
+
+
+
+                <div class="row justify-content-center label-div">
+                    <label class="player-label">
                         Player 1
                     </label>
                 </div>
                 <div class="row justify-content-center add-player-input">
                     <select class="add-player-name" id="player1">
-                            <option value="Ken Oliver">Ken Oliver</option>
-                            <option value="Joe Smith">Joe Smith</option>
-                            <option value="Michael Smith">Michael Smith</option>
-                            <option value="R.SMITH">R SMITH</option>
-                            <option value="Mathers">Mathers</option>
-                            <option value="VAN BARNEVELD">VAN BARNEVELD</option>
-                            <option value="GARDNER">GARDNER</option>
-                            <option value="K. ANDERSON">K. ANDERSON</option>
-                            <option value="THOMPSON">THOMPSON</option>
-                            <option value="WRIGHT">WRIGHT</option>
-                            <option value="VAN GERWYN">VAN GERWYN</option>
-                            <option value="CROSS">CROSS</option>
-                            <option value="PUSEY">PUSEY</option>
+
                     </select>
                 </div>
                 <div class="row justify-content-center">
@@ -48,19 +82,7 @@
                 <div class="row justify-content-center add-player-input">
                     <select class="add-player-name" id="player2">
 
-                            <option value="Ken Oliver">Ken Oliver</option>
-                            <option value="Joe Smith">Joe Smith</option>
-                            <option value="Michael Smith">Michael Smith</option>
-                            <option value="R.SMITH">R SMITH</option>
-                            <option value="Mathers">Mathers</option>
-                            <option value="VAN BARNEVELD">VAN BARNEVELD</option>
-                            <option value="GARDNER">GARDNER</option>
-                            <option value="K. ANDERSON">K. ANDERSON</option>
-                            <option value="THOMPSON">THOMPSON</option>
-                            <option value="WRIGHT">WRIGHT</option>
-                            <option value="VAN GERWYN">VAN GERWYN</option>
-                            <option value="CROSS">CROSS</option>
-                            <option value="PUSEY">PUSEY</option>
+
                     </select>
                 </div>
 
@@ -75,7 +97,7 @@
                 </div>
                 <div class="row justify-content-center label-div">
                     <label class="player-label">
-                        Type Of Game
+                        Game
                     </label>
                 </div>
                 <div class="row justify-content-center add-player-input">
@@ -98,7 +120,7 @@
                     </select>
                 </div>
                 <div class="row justify-content-center add-player-input">
-                    <input class="add-new-game" id="number-of-legs" type="text" value="11">
+                    <input class="add-new-game" id="number-of-legs" type="text" value="14">
 
                 </div>
 
@@ -131,6 +153,92 @@
             </div>
         </div>
         <script>
+            var dataRaw = '<%- pageLeaguePlayers %>'
+            var data = JSON.parse(dataRaw);
+            console.log(data)
+
+            function addAllPlayers() {
+
+                var player1 = document.getElementById("player1");
+                var player2 = document.getElementById("player2");
+
+
+                data.players.forEach(function (item) {
+                    var opt = document.createElement("option")
+                    opt.value = item.playerName
+                    opt.innerHTML = item.playerName
+                    player1.appendChild(opt)
+
+                    var opt2 = document.createElement("option")
+                    opt2.value = item.playerName
+                    opt2.innerHTML = item.playerName
+
+                    player2.appendChild(opt2)
+
+                })
+
+            }
+
+            function getDivisionPlayers(venue, division) {
+                var divisionPlayers = data.players.filter(function (item) {
+                    return item.venue == venue && item.division == division;
+                });
+                return divisionPlayers;
+            }
+
+            function getLeaguePlayers(venue) {
+                var leaguePlayers = data.players.filter(function (item) {
+                    return item.venue == venue;
+                });
+                return leaguePlayers;
+            }
+
+            function getDivisions(venue) {
+
+
+                var leagueData = data.players.filter(function (item) {
+                    return item.venue == venue;
+                });
+
+                var divisions = [];
+
+                leagueData.forEach(function (element) {
+                    if (divisions.indexOf(element.division) === -1) {
+                        divisions.push(element.division);
+                    }
+                });
+
+                divisions.sort(function (x, y) {
+                    if (x.includes("Premier") && y.includes("Premier")) {
+                        if (x == "Premier A") {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    } else if (x.includes("Premier") || y.includes("Premier")) {
+                        return x.includes('Premier') ? -1 : 1
+
+                    } else if (x.includes("Championship") || y.includes("Championship")) {
+                        return x.includes('Championship') ? -1 : 1
+
+                    } else {
+
+                        if (x.length > 1 && y.length > 1) {
+
+                            if (parseInt(x.substring(0, 1)) == parseInt(y.substring(0, 1))) {
+
+                                return (x.substring(1, 2) > y.substring(1, 2) ? 1 : -1)
+                            } else {
+                                return (parseInt(x.substring(0, 1)) - parseInt(y.substring(0, 1)))
+                            }
+                        } else {
+                            return (parseInt(x.substring(0, 1)) - parseInt(y.substring(0, 1)))
+                        }
+                    }
+                });
+                return divisions
+            };
+
             function startMatch() {
                 console.log("starting Match");
                 var match = new Match
@@ -142,11 +250,11 @@
                 var player2 = document.getElementById("player2").value
                 var radio1 = document.getElementById("first-to-throw-player1").checked
                 if (radio1) {
-                    match.addPlayer(player1,1);
-                    match.addPlayer(player2,2)
+                    match.addPlayer(player1, 1);
+                    match.addPlayer(player2, 2)
                 } else {
-                    match.addPlayer(player1,2);
-                    match.addPlayer(player2,1)
+                    match.addPlayer(player1, 2);
+                    match.addPlayer(player2, 1)
                 }
                 sessionStorage.match = JSON.stringify(match)
                 console.log(sessionStorage.match)
@@ -160,20 +268,138 @@
                 this.numberOfLegs = 3
                 this.players = []
                 this.scores = []
-                this.addPlayer = function (name , order) {
+                this.addPlayer = function (name, order) {
                     var number = this.players.length + 1
                     var id = "player-" + number
-                    var p = new player(name, order,id)
+                    var p = new player(name, order, id)
                     this.players.push(p)
                 }
-              
-                function player(name, order , id) {
+
+                function player(name, order, id) {
                     this.playername = name
                     this.order = order
                     this.id = id
                 }
-               
+
             }
+
+            function venueChange(id) {
+                getGameTitle();
+                var elem = document.getElementById(id);
+                console.log(elem.value)
+               
+                var divs = getDivisions(elem.value)
+                var list = document.getElementById("divisions");
+                var player1 = document.getElementById("player1");
+                var player2 = document.getElementById("player2");
+                var allPlayers = getLeaguePlayers(elem.value)
+                console.log("HHHH")
+                list.innerHTML = ""
+                player1.innerHTML = ""
+                player2.innerHTML = ""
+                
+                var opt = document.createElement("option")
+                    opt.value = ""
+                    opt.innerHTML = ""
+                    list.appendChild(opt)
+
+                divs.forEach(function (item) {
+                    var opt = document.createElement("option")
+                    opt.value = item
+                    opt.innerHTML = item
+                    list.appendChild(opt)
+                })
+
+
+                allPlayers.forEach(function (item) {
+                    var opt = document.createElement("option")
+                    opt.value = item.playerName
+                    opt.innerHTML = item.playerName
+                    player1.appendChild(opt)
+
+                    var opt2 = document.createElement("option")
+                    opt2.value = item.playerName
+                    opt2.innerHTML = item.playerName
+
+                    player2.appendChild(opt2)
+
+                })
+
+            }
+
+            function divisionChange(id) {
+               getGameTitle();
+                var elem = document.getElementById(id);
+                console.log(elem.value)
+                 if (!elem.value == ""){
+                var venue = document.getElementById("venues").value;
+                var player1 = document.getElementById("player1");
+                var player2 = document.getElementById("player2");
+                var allPlayers = getDivisionPlayers(venue, elem.value)
+              
+                player1.innerHTML = ""
+                player2.innerHTML = ""
+
+
+                allPlayers.forEach(function (item) {
+                    var opt = document.createElement("option")
+                    opt.value = item.playerName
+                    opt.innerHTML = item.playerName
+                    player1.appendChild(opt)
+
+                    var opt2 = document.createElement("option")
+                    opt2.value = item.playerName
+                    opt2.innerHTML = item.playerName
+
+                    player2.appendChild(opt2)
+
+                })
+
+            }
+
+            }
+            function getGameTitle(){
+                var title = ""
+                var venue = document.getElementById("venues").value;
+                var division = document.getElementById("divisions").value;
+                if (division.includes("Premier") || division.includes("Championship")){
+                    title = venue + " - " + division + " Division"
+                }else{
+                    title = venue + " - Division " + division 
+                }
+                
+                
+                if (venue == ""){
+                    title = "League Play"
+                }
+                if (division == ""){
+                    title = "League Play -" + venue
+                }
+                document.getElementById("game-title").value = title
+            }
+
+            function addAllPlayers() {
+
+                var player1 = document.getElementById("player1");
+                var player2 = document.getElementById("player2");
+
+
+                data.players.forEach(function (item) {
+                    var opt = document.createElement("option")
+                    opt.value = item.playerName
+                    opt.innerHTML = item.playerName
+                    player1.appendChild(opt)
+
+                    var opt2 = document.createElement("option")
+                    opt2.value = item.playerName
+                    opt2.innerHTML = item.playerName
+
+                    player2.appendChild(opt2)
+
+                })
+
+            }
+            addAllPlayers();
         </script>
     </body>
 
