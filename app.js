@@ -16,6 +16,7 @@ app.use(require('./routes/stats'));
 app.use(require('./routes/bestlegs'));
 app.use(require('./routes/checkouts'));
 app.use(require('./routes/addplayer'));
+app.use(require('./routes/view-leg'));
 app.use('/public',express.static('public'));
 var server = app.listen(app.get('port'),function(){
     console.log('Listening on port ' + app.get('port'));

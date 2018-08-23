@@ -354,6 +354,21 @@ div.main-menu-item:hover {
     padding: 0;
     height: 25%;
 }
+.details-grid-row-view-leg {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 7fr 3fr 2fr 3fr 7fr;
+    grid-template-rows: 100%;
+    grid-column-gap: 1px;
+    grid-row-gap: 0px;
+    color: white;
+    border-width: 3px;
+    font-weight: 700;
+    text-align: center;
+    font-size: 50px;
+    padding: 0;
+    height: 10%;
+}
 
 .details-remaining-item,
 .details-score-item,
@@ -378,6 +393,18 @@ div.main-menu-item:hover {
 .details-score-item {
     font-weight: normal;
     font-size: 50px
+}
+
+#view-leg-grid .details-darts-number{
+    font-size: 30px;
+}
+
+#view-leg-grid .details-remaining-item{
+    font-size: 50px !important;
+}
+
+#view-leg-grid .details-score-item{
+    font-size: 40px !important;
 }
 
 /* Start Menu Nav */
@@ -417,6 +444,12 @@ div.main-menu-item:hover {
 }
 
 /* The navigation menu links */
+
+.leg-router  {
+    text-decoration: none !important;
+    color: #404040;
+}
+
 
 .side-nav a {
    
@@ -772,6 +805,27 @@ hr {
     transform: translateY(-50%);
   
 }
+
+#view-leg-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1.5fr;
+    grid-template-rows: 4% 10% 5% 11% 60%;
+    grid-row-gap: 2px;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    max-width: 100%;
+    box-sizing: border-box;
+   
+   
+    
+}
+.view-leg-details{
+    grid-column: span 5;
+}
+
+
 .flag-icon{
     font-size:.5em;
     border: .5px solid lightgray
@@ -812,7 +866,19 @@ hr {
 }
 
 /* end customize scrollbar css */
-
+.pagination li a{
+   
+    color:#404040;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold
+} 
+.pagination  {
+   margin:0
+}
+.page-scroll{
+    grid-column: span 5;
+    box-sizing: border-box
+}
 @media only screen and (max-width: 1140px) {
     .container {
         padding:5px;

@@ -3,42 +3,18 @@
 <% include partials/head.ejs %>
 
     <body>
-
+        <script>
+           var match = JSON.parse(sessionStorage.match);  
+        </script>
         <% include partials/side-menu.ejs %>
         <div class="container">
 
             <div id="stats-grid">
                 <div onclick="openNav()" id='menu-label'>
                     <i class="fa fa-bars" aria-hidden="true"></i> IDL Scoreboard</div>
-                <div class="row justify-content-center confirm-row stats-player-1">
-                    <div class="stats-player ">
-                        <div class="stats-text" id="name-player-1"  >
-                            PLAYER 1
-                        </div>
-                    </div>
-                </div>
+                    <% include partials/stat-header.ejs %>
 
-                <div class="row justify-content-center confirm-row">
-                    <div class="stats-score">
-                        <div class="stats-text" id="stats-final-score">
-                            8-3
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row justify-content-center confirm-row stats-player-2">
-                    <div class="stats-player ">
-                        <div class="stats-text" id="name-player-2" ">
-                            PLAYER 2
-                        </div>
-                    </div>
-                </div>
-
-                <div class="app-grid-row stats-grid-info">
-
-                    <div class="grid-text">FINAL SCORE</div>
-
-                </div>
+               
                
             </div>
 
@@ -73,7 +49,7 @@
                  `
                         <div class=stats-item-center>
                             <div class="stats-text">
-                                LEG-${leg} 
+                                <a class="leg-router" href="view-leg/${leg}">LEG-${leg}</a>
                             </div>
                         </div>
                         `   ;  
@@ -111,27 +87,13 @@
             }
            
 
-            function getScore(){
-                var player1=0
-                var player2 =0
-                match.scores.forEach(function(score){
-                    if(score.finished){
-                        if (score.player == match.players[0].playername){
-                            player1++
-                        
-                        }else{
-                            player2 ++
-                        }
-                    }
-                })
-                document.getElementById("stats-final-score").innerHTML = player1 + " - " + player2
-            }
+           
 
-            var match = JSON.parse(sessionStorage.match);
+           
             var player1
             var player2
             getAllCheckouts();
-            getScore()
+           
           
 
         </script>
