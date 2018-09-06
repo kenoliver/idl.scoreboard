@@ -242,6 +242,8 @@
             function startMatch() {
                 console.log("starting Match");
                 var match = new Match
+                match.id = new Date().getTime()
+             
                 match.gameType = document.getElementById("game-type").value
                 match.startCount = document.getElementById("game-type-value").value
                 match.gameTitle = document.getElementById("game-title").value
@@ -262,6 +264,7 @@
             }
 
             function Match() {
+                this.id = ""
                 this.gameType = "X01"
                 this.startCount = 501
                 this.gameTitle = ""
