@@ -6,7 +6,9 @@ router.get('/', function (req, res) {
   
   res.render('index', {
     pageTitle: 'Main Menu',
-    pageID: 'index'
+    pageID: 'index',
+    
+    pagetest: 'test'
   });
 });
 
