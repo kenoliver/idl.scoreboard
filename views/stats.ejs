@@ -3,7 +3,9 @@
 <% include partials/head.ejs %>
 
     <body>
-
+        <script>
+            var match = JSON.parse(sessionStorage.match);  
+         </script>
         <% include partials/side-menu.ejs %>
         <div class="container">
 
@@ -115,7 +117,7 @@
                 return obj
             }
 
-            var match = JSON.parse(sessionStorage.match)
+            
             var legs = []
             
             match.players.forEach(function (player) {

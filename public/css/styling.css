@@ -138,7 +138,7 @@ select:focus,input:focus {
 }
 
 .add-player-input select {
-    height: 50%;
+    height: 70%;
     width: 70%;
     background-color: white;
     color:#404040;
@@ -150,7 +150,7 @@ select:focus,input:focus {
 }
 
 .new-game-middle{
-    height: 50%;
+    height: 70%;
     width: 70%;
     border-radius: 10px;
     position: relative;
@@ -160,7 +160,8 @@ select:focus,input:focus {
 button.new-game-middle{
     background-color: red;
     color:white;
-    opacity:.8
+    opacity:.8;
+    font-size: 1em
 }
 button.new-game-middle:hover{
     opacity:1
@@ -176,7 +177,7 @@ option{
     color:#404040
 }
 input.add-new-game{
-    height: 50%;
+    height: 70%;
     width: 70%;
     border-radius: 10px;
     background-color: white;
