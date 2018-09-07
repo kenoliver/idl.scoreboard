@@ -1,0 +1,56 @@
+<html>
+
+<% include partials/head.ejs %>
+
+<body>
+    <script>
+        var matches = JSON.parse(localStorage.matches);
+    </script>
+    <% include partials/side-menu.ejs %>
+    <div class="container">
+        <div id="matches-grid">
+            <div onclick="openNav()" id='menu-label'>
+                <i class="fa fa-bars" aria-hidden="true"></i> IDL Scoreboard</div>
+
+            <div class="row justify-content-center" style="color:white;font-size:2em;font-weight:bold">Matches</div>
+            <div>
+                <table class="table" id="matchTable" style="color:white">
+
+                </table>
+
+
+            </div>
+         
+
+        </div>
+    </div>
+    <script>
+        var t = document.getElementById("matchTable")
+        matches.forEach(function (item) {
+            var tr = document.createElement("tr")
+            tr.name = matches.indexOf(item)
+            var html =
+                `
+                                <tr>
+                                <td>${item.players[0].playername}</td>
+                                <td> VS </td>
+                                <td>${item.players[1].playername}</td>
+                                <td>${item.gameTitle}</td>      
+                            
+                                </tr>  
+
+                            `
+            tr.innerHTML = html
+            tr.addEventListener('click', function () {
+
+                sessionStorage.match = JSON.stringify(matches[parseInt(this.name)]);
+                window.location.href = "/stats"
+            })
+            t.appendChild(tr)
+        })
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+<script>
+            var list = []
+            </script>
+        <% var matches = JSON.parse(pageMatches);
+            matches.forEach(function(item){
+            var newItem = JSON.stringify(item) %>
+
+            <script>
+            var listItem = `<%- newItem %>`
+            var arrayItem = JSON.parse(listItem)
+            list.push(arrayItem);
+            </script>
+
+
+
+
+           <%  })
+        %>
+        <script>

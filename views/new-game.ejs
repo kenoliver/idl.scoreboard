@@ -248,6 +248,8 @@
                 match.startCount = document.getElementById("game-type-value").value
                 match.gameTitle = document.getElementById("game-title").value
                 match.numberOfLegs = document.getElementById("number-of-legs").value
+                match.venue = document.getElementById("venues").value
+                match.division = document.getElementById("divisions").value
                 var player1 = document.getElementById("player1").value
                 var player2 = document.getElementById("player2").value
                 var radio1 = document.getElementById("first-to-throw-player1").checked
@@ -265,8 +267,11 @@
 
             function Match() {
                 this.id = ""
+                this.date = new Date().getYear()+"-"+new Date().getMonth()+"-" + new Date().getDate()
                 this.gameType = "X01"
                 this.startCount = 501
+                this.venue =""
+                this.division=""
                 this.gameTitle = ""
                 this.numberOfLegs = 3
                 this.players = []
